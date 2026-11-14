@@ -1,37 +1,29 @@
 cmake_minimum_required(VERSION 3.20)
-
-project(CodeRun_2026_C LANGUAGES CXX)
+project(CodeRun-2026-C-)
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
+add_subdirectory(glm)
 
-add_executable(${PROJECT_NAME}
-    main.cpp
-    circle.cpp
-    rectangle.cpp
+add_executable(CodeRun-2026-C-
+        main.cpp
+        circle.cpp
+        circle.h
+        rectangle.cpp
+        rectangle.h
 )
 
-target_include_directories(${PROJECT_NAME}
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}
+target_include_directories(CodeRun-2026-C- PRIVATE SDL3/include)
+
+target_link_directories(CodeRun-2026-C- PRIVATE SDL3/lib)
+
+target_link_libraries(CodeRun-2026-C- PRIVATE
+        SDL3
+        glm::glm
 )
 
-
-list(PREPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/SDL3")
-find_package(SDL3 CONFIG REQUIRED)
-
-target_link_libraries(${PROJECT_NAME}
-    PRIVATE
-        SDL3::SDL3
-)
-
-
-if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/SDL3.dll")
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+add_custom_command(TARGET CodeRun-2026-C- POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${CMAKE_CURRENT_SOURCE_DIR}/SDL3.dll"
-            "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
-    )
-endif()
+        "${CMAKE_CURRENT_SOURCE_DIR}/SDL3.dll"
+        "$<TARGET_FILE_DIR:CodeRun-2026-C->/SDL3.dll"
+)
